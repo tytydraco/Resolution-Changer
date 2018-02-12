@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SM Resolution Changer</string>
+    <string name="x">x</string>
+    <string name="apply">Apply</string>
+    <string name="def">Default</string>
+    <string name="density">Density</string>
+    <string name="manual_refresh">Manual Refresh</string>
+    <string name="reboot_warning">Apply: applies the current configuration and exits.\nDefault: sets the configuration present on first launch\nManual Refresh: sets the configuration to what the device is currently displaying\n\nNote: The Galaxy S8 default resolution is actually 1080x2220 so replace 1920 with 2220. You can manually reset the resolution by going to Settings -> Display -> Resolution and changing it to a new resolution. Then, go to Developer Settings -> Minimum Width and set it to 360 for an S8.\n\nIf you are unable to return to a functional resolution, please run these ADB commands and reboot:\n\nadb shell settings put global display_size_forced 1080,1920\nadb shell settings put global display_density_forced 480\n\nadb shell wm size reset\nadb shell wm density reset</string>
+</resources>
