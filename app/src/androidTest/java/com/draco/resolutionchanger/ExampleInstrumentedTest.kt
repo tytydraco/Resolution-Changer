@@ -1,4 +1,4 @@
-package com.draco.smresolutionchanger
+package com.draco.resolutionchanger
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -10,6 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/display_config"
         android:orientation="vertical"
         android:padding="20dp">
 
@@ -64,9 +65,26 @@
             tools:ignore="UnusedAttribute"/>
     </LinearLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/display_config"
+        android:layout_above="@+id/bottom_bar"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:scrollbars="none">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:lineSpacingMultiplier="1.2"
+            android:text="@string/about"/>
+    </ScrollView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/bottom_bar"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:padding="10dp">

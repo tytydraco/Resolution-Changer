@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SM Resolution Changer</string>
+    <string name="app_name">Resolution Changer</string>
 
     <string name="resolution_options">Resolution</string>
     <string name="density_options">Density</string>
@@ -20,6 +20,23 @@ Root is NOT required!
 
 Once ADB is setup, connect the device to a computer and run the following command:
 
+"
+    </string>
+
+    <string name="about">
+"Resolution Changer works by using a hidden Android API called IWindowManager. Originally, Google restricted access to this API starting with Android Pie, however, they allowed developers to disable the API blacklist by tweaking a Secure Setting.
+
+Resolution Changer first unlocks the blacklisted APIs, and then applies the requested resolution and display density.
+
+If you do not specify a height or width, Resolution Changer will simply use the resolution that is currently set by the device.
+
+If you do not specify a density, Resolution Changer will try to calculate a suitable density based on the diagonal screen size of the device.
+
+Resolution Changer was made by Tyler Nijmeh.
+
+If you need help or have suggestions, you can contact me:
+Email: tylernij@gmail.com
+Telegram: tytydraco
 "
     </string>
 </resources>

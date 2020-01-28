@@ -1,4 +1,4 @@
-package com.draco.smresolutionchanger
+package com.draco.resolutionchanger
 
 import android.Manifest
 import android.content.DialogInterface

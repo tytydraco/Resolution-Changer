@@ -1,4 +1,4 @@
-package com.draco.smresolutionchanger
+package com.draco.resolutionchanger
 
 import android.annotation.SuppressLint
 import android.content.ContentResolver
