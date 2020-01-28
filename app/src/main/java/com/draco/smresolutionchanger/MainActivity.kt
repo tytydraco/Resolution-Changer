@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var reset: Button
     private lateinit var apply: Button
 
+    /* Default screen size and density on start */
     object DefaultScreenSpecs {
         var width: Int = 0
         var height: Int = 0
@@ -99,6 +100,7 @@ class MainActivity : AppCompatActivity() {
         wmApi.setDisplayResolution(w, h)
         wmApi.setDisplayDensity(d)
 
+        /* Delay because when we change resolution, window changes */
         Handler().postDelayed({
             showWarningDialog()
         }, 500)
@@ -109,10 +111,11 @@ class MainActivity : AppCompatActivity() {
     /* Show 5 second countdown */
     private fun showWarningDialog() {
         var dismissed = false
+        val confirmMessage = "If these settings look correct, press Confirm to keep them.\n\n"
 
         val dialog = AlertDialog.Builder(this)
                 .setTitle("Confirm Settings")
-                .setMessage("Resetting in 5 seconds.")
+                .setMessage(confirmMessage)
                 .setPositiveButton("Confirm") { _: DialogInterface, _: Int ->
                     dismissed = true
                 }
@@ -125,8 +128,10 @@ class MainActivity : AppCompatActivity() {
             override fun onTick(millisUntilFinished: Long) {
                 if (dismissed) {
                     this.cancel()
-                } else
-                    dialog.setMessage("Resetting in " + ((millisUntilFinished / 1000) + 1) + " seconds.")
+                } else {
+                    val secondsLeft = ((millisUntilFinished / 1000) + 1)
+                    dialog.setMessage(confirmMessage + "Resetting in " + secondsLeft + " seconds.")
+                }
             }
 
             override fun onFinish() {
