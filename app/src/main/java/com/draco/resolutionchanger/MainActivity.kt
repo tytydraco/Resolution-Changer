@@ -11,6 +11,7 @@ import android.os.CountDownTimer
 import android.os.Handler
 import android.preference.PreferenceManager
 import android.util.DisplayMetrics
+import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
@@ -47,23 +48,23 @@ class MainActivity : AppCompatActivity() {
         var density: Int = 0
         var diagInches: Int = 0
         var diagPixels: Int = 0
-    }
 
-    /* Set DefaultScreenSpecs to current settings */
-    private fun setupDefaultScreenSpecs() {
-        val dm = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(dm)
+        /* Set DefaultScreenSpecs to current settings */
+        fun setup(windowManager: WindowManager) {
+            val dm = DisplayMetrics()
+            windowManager.defaultDisplay.getMetrics(dm)
 
-        DefaultScreenSpecs.width = dm.widthPixels
-        DefaultScreenSpecs.height = dm.heightPixels
-        DefaultScreenSpecs.density = dm.densityDpi
+            width = dm.widthPixels
+            height = dm.heightPixels
+            density = dm.densityDpi
 
-        val wi = dm.widthPixels.toDouble() / dm.xdpi.toDouble()
-        val hi = dm.heightPixels.toDouble() / dm.ydpi.toDouble()
+            val wi = dm.widthPixels.toDouble() / dm.xdpi.toDouble()
+            val hi = dm.heightPixels.toDouble() / dm.ydpi.toDouble()
 
-        DefaultScreenSpecs.diagInches = sqrt(wi.pow(2.0) + hi.pow(2.0)).toInt()
-        DefaultScreenSpecs.diagPixels = sqrt(dm.widthPixels.toDouble().pow(2) +
-                dm.heightPixels.toDouble().pow(2)).toInt()
+            diagInches = sqrt(wi.pow(2.0) + hi.pow(2.0)).toInt()
+            diagPixels = sqrt(dm.widthPixels.toDouble().pow(2) +
+                    dm.heightPixels.toDouble().pow(2)).toInt()
+        }
     }
 
     /* Estimate proper DPI for device */
@@ -103,9 +104,8 @@ class MainActivity : AppCompatActivity() {
         /* Delay because when we change resolution, window changes */
         Handler().postDelayed({
             showWarningDialog()
+            updateEditTexts()
         }, 500)
-
-        updateEditTexts()
     }
 
     /* Show 5 second countdown */
@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity() {
     /* Use new resolution for text */
     private fun updateEditTexts() {
         /* Read screen specs */
-        setupDefaultScreenSpecs()
+        DefaultScreenSpecs.setup(windowManager)
 
         width.setText(DefaultScreenSpecs.width.toString())
         height.setText(DefaultScreenSpecs.height.toString())
@@ -159,7 +159,11 @@ class MainActivity : AppCompatActivity() {
         wmApi.clearDisplayDensity()
         wmApi.clearDisplayResolution()
 
-        updateEditTexts()
+        /* Restart activity because windowManager breaks after reset */
+        finish()
+        overridePendingTransition(0, 0)
+        startActivity(intent)
+        overridePendingTransition(0, 0)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
