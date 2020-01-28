@@ -5,13 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:orientation="vertical"
-    tools:ignore="UnusedAttribute">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/resolution_options" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,35 +26,42 @@
                 style="@style/TextTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/pill_shaped_background"
                 android:id="@+id/width"
                 android:autofillHints="@string/width"
                 android:hint="@string/width_hint"
-                android:layout_weight="1"/>
-
-            <TextView
-                style="@style/TextTheme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/resolution_delimiter"/>
+                android:layout_weight="1"
+                tools:ignore="UnusedAttribute"
+                android:layout_marginEnd="5dp"/>
 
             <EditText
                 style="@style/TextTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/pill_shaped_background"
                 android:id="@+id/height"
                 android:autofillHints="@string/height"
                 android:hint="@string/height_hint"
-                android:layout_weight="1"/>
-
+                android:layout_weight="1"
+                tools:ignore="UnusedAttribute"
+                android:layout_marginStart="5dp"/>
         </LinearLayout>
 
+        <TextView
+            style="@style/TextAppearance.AppCompat.Menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/density_options" />
         <EditText
             style="@style/TextTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/pill_shaped_background"
             android:id="@+id/density"
             android:autofillHints="@string/density"
-            android:hint="@string/density_hint" />
+            android:hint="@string/density_hint"
+            tools:ignore="UnusedAttribute"/>
     </LinearLayout>
 
     <LinearLayout
@@ -64,7 +77,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/reset"
             android:text="@string/reset"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            tools:ignore="UnusedAttribute"/>
 
         <Button
             style="@style/ButtonTheme"
@@ -73,7 +87,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/apply"
             android:text="@string/apply"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            tools:ignore="UnusedAttribute"/>
     </LinearLayout>
 
 </RelativeLayout>

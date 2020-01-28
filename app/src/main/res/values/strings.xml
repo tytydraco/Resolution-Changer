@@ -1,14 +1,15 @@
 <resources>
     <string name="app_name">SM Resolution Changer</string>
 
-    <string name="resolution_delimiter">x</string>
+    <string name="resolution_options">Resolution</string>
+    <string name="density_options">Density</string>
 
     <string name="width">Width</string>
-    <string name="width_hint">Current Width</string>
+    <string name="width_hint">Width</string>
     <string name="height">Height</string>
-    <string name="height_hint">Current Height</string>
+    <string name="height_hint">Height</string>
     <string name="density">Density</string>
-    <string name="density_hint">Calculate Density</string>
+    <string name="density_hint">Density</string>
     <string name="reset">Reset</string>
     <string name="apply">Apply</string>
 

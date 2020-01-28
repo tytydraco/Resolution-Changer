@@ -1,12 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme.DayNight" parent="Theme.MaterialComponents.DayNight" tools:ignore="NewApi">
+    <style name="AppTheme" parent="Theme.MaterialComponents" tools:ignore="NewApi">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">true</item>
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
     </style>
 
@@ -15,6 +14,9 @@
         <item name="android:background">@null</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">24sp</item>
+        <item name="android:padding">20dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
     </style>
 
     <style name="ButtonTheme" parent="Widget.MaterialComponents.Button">
@@ -23,10 +25,9 @@
         <item name="android:layout_margin">10dp</item>
         <item name="android:textSize">20sp</item>
         <item name="cornerRadius">20dp</item>
-        <item name="elevation">20dp</item>
     </style>
 
-    <style name="AlertDialogTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+    <style name="AlertDialogTheme" parent="Theme.MaterialComponents.Dialog.Alert">
         <item name="buttonBarPositiveButtonStyle">@style/Alert.Button.Positive</item>
         <item name="buttonBarNegativeButtonStyle">@style/Alert.Button.Neutral</item>
         <item name="buttonBarNeutralButtonStyle">@style/Alert.Button.Neutral</item>
