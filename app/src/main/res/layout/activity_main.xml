@@ -1,83 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.draco.smresolutionchanger.MainActivity"
-    android:orientation="vertical">
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    tools:ignore="UnusedAttribute">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-        <EditText
-            android:textAlignment="center"
-            android:inputType="number"
-            android:textSize="40sp"
-            android:id="@+id/width"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/x"/>
-        <EditText
-            android:textAlignment="center"
-            android:inputType="number"
-            android:textSize="40sp"
-            android:id="@+id/height"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-        <TextView
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/density"/>
-        <EditText
-            android:textAlignment="center"
-            android:inputType="number"
-            android:textSize="40sp"
-            android:id="@+id/density"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/apply"
-        android:id="@+id/apply"/>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/def"
-        android:id="@+id/def"/>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/manual_refresh"
-        android:id="@+id/manual_refresh"/>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
+        android:orientation="vertical">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/reboot_warning"
-            android:padding="10dp"
-            android:textSize="15sp"/>
-    </ScrollView>
-</LinearLayout>
+            android:orientation="horizontal">
+            <EditText
+                style="@style/TextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/width"
+                android:autofillHints="@string/width"
+                android:hint="@string/width_hint"
+                android:layout_weight="1"/>
+
+            <TextView
+                style="@style/TextTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/resolution_delimiter"/>
+
+            <EditText
+                style="@style/TextTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/height"
+                android:autofillHints="@string/height"
+                android:hint="@string/height_hint"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <EditText
+            style="@style/TextTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/density"
+            android:autofillHints="@string/density"
+            android:hint="@string/density_hint" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp">
+        <Button
+            style="@style/ButtonTheme"
+            android:backgroundTint="@color/reset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/reset"
+            android:text="@string/reset"
+            android:layout_weight="1" />
+
+        <Button
+            style="@style/ButtonTheme"
+            android:backgroundTint="@color/apply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/apply"
+            android:text="@string/apply"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+</RelativeLayout>
