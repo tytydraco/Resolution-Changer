@@ -20,12 +20,62 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import kotlin.concurrent.fixedRateTimer
 import kotlin.math.pow
+import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
 
 class MainActivity : AppCompatActivity() {
     /* Command that user must run to grant permissions */
     private val adbCommand = "pm grant ${BuildConfig.APPLICATION_ID} android.permission.WRITE_SECURE_SETTINGS"
+
+    /* Resolution presets */
+    class Resolution(var x: Int, var y: Int) {
+        private fun orientation(x: Int, y: Int): String {
+            return if (x > y)
+                "Landscape"
+            else
+                "Portrait"
+        }
+        fun displayName(): String {
+            return "${x}x${y} - ${orientation(x, y)}"
+        }
+    }
+
+    private val presets = listOf(
+            Resolution(480, 640),
+            Resolution(480, 960),
+            Resolution(600, 800),
+            Resolution(600, 1200),
+            Resolution(720, 1280),
+            Resolution(720, 1440),
+            Resolution(768, 1366),
+            Resolution(768, 1536),
+            Resolution(900, 1600),
+            Resolution(900, 1800),
+            Resolution(1080, 1920),
+            Resolution(1080, 2160),
+            Resolution(1440, 2560),
+            Resolution(1440, 2880),
+            Resolution(2160, 3840),
+            Resolution(2160, 4320),
+
+            Resolution(640, 480),
+            Resolution(960, 480),
+            Resolution(800, 600),
+            Resolution(1200, 600),
+            Resolution(1280, 720),
+            Resolution(1440, 720),
+            Resolution(1366, 768),
+            Resolution(1536, 768),
+            Resolution(1600, 900),
+            Resolution(1800, 900),
+            Resolution(1920, 1080),
+            Resolution(2160, 1080),
+            Resolution(2560, 1440),
+            Resolution(2880, 1440),
+            Resolution(3840, 2160),
+            Resolution(4320, 2160)
+    )
 
     /* Preferences */
     private lateinit var sharedPreferences: SharedPreferences
@@ -35,6 +85,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var wmApi: WmApi
 
     /* UI elements */
+    private lateinit var pickPreset: Button
     private lateinit var width: EditText
     private lateinit var height: EditText
     private lateinit var density: EditText
@@ -46,8 +97,8 @@ class MainActivity : AppCompatActivity() {
         var width: Int = 0
         var height: Int = 0
         var density: Int = 0
-        var diagInches: Int = 0
-        var diagPixels: Int = 0
+        var diagInches: Double = 0.0
+        var diagPixels: Double = 0.0
 
         /* Set DefaultScreenSpecs to current settings */
         fun setup(windowManager: WindowManager) {
@@ -61,16 +112,16 @@ class MainActivity : AppCompatActivity() {
             val wi = dm.widthPixels.toDouble() / dm.xdpi.toDouble()
             val hi = dm.heightPixels.toDouble() / dm.ydpi.toDouble()
 
-            diagInches = sqrt(wi.pow(2.0) + hi.pow(2.0)).toInt()
+            diagInches = sqrt(wi.pow(2.0) + hi.pow(2.0))
             diagPixels = sqrt(dm.widthPixels.toDouble().pow(2) +
-                    dm.heightPixels.toDouble().pow(2)).toInt()
+                    dm.heightPixels.toDouble().pow(2))
         }
     }
 
     /* Estimate proper DPI for device */
     private fun calculateDPI(x: Int, y: Int): Int {
         val diagPixels = sqrt(x.toDouble().pow(2) + y.toDouble().pow(2)).toInt()
-        return (diagPixels / DefaultScreenSpecs.diagInches)
+        return (diagPixels / DefaultScreenSpecs.diagInches).roundToInt()
     }
 
     /* Apply resolution and density */
@@ -166,6 +217,30 @@ class MainActivity : AppCompatActivity() {
         overridePendingTransition(0, 0)
     }
 
+    /* Ask user to pick from a list of resolution presets */
+    private fun showPresetDialog() {
+        val displayNamePresets = arrayOfNulls<String>(presets.size)
+
+        /* Fill array with display names for each preset */
+        for (i in presets.indices)
+            displayNamePresets[i] = presets[i].displayName()
+
+        AlertDialog.Builder(this)
+                .setTitle("Presets")
+                .setItems(displayNamePresets) { _: DialogInterface, which: Int ->
+                    wmApi.setBypassBlacklist(true)
+                    wmApi.setDisplayResolution(presets[which].x, presets[which].y)
+                    wmApi.setDisplayDensity(calculateDPI(presets[which].x, presets[which].y))
+
+                    /* Delay because when we change resolution, window changes */
+                    Handler().postDelayed({
+                        showWarningDialog()
+                        updateEditTexts()
+                    }, 500)
+                }
+                .show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -178,11 +253,16 @@ class MainActivity : AppCompatActivity() {
         editor = sharedPreferences.edit()
 
         /* Setup UI elements */
+        pickPreset = findViewById(R.id.pick_preset)
         width = findViewById(R.id.width)
         height = findViewById(R.id.height)
         density = findViewById(R.id.density)
         reset = findViewById(R.id.reset)
         apply = findViewById(R.id.apply)
+
+        pickPreset.setOnClickListener {
+            showPresetDialog()
+        }
 
         reset.setOnClickListener {
             reset()

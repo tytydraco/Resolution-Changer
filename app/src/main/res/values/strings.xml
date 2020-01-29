@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">Resolution Changer</string>
 
+    <string name="presets_options">Presets</string>
     <string name="resolution_options">Resolution</string>
     <string name="density_options">Density</string>
 
+    <string name="presets">Pick Preset</string>
     <string name="width">Width</string>
     <string name="width_hint">Width</string>
     <string name="height">Height</string>
