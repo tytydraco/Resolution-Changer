@@ -28,55 +28,6 @@ class MainActivity : AppCompatActivity() {
     /* Command that user must run to grant permissions */
     private val adbCommand = "pm grant ${BuildConfig.APPLICATION_ID} android.permission.WRITE_SECURE_SETTINGS"
 
-    /* Resolution presets */
-    class Resolution(var x: Int, var y: Int) {
-        private fun orientation(x: Int, y: Int): String {
-            return if (x > y)
-                "Landscape"
-            else
-                "Portrait"
-        }
-        fun displayName(): String {
-            return "${x}x${y} - ${orientation(x, y)}"
-        }
-    }
-
-    private val presets = listOf(
-            Resolution(480, 640),
-            Resolution(480, 960),
-            Resolution(600, 800),
-            Resolution(600, 1200),
-            Resolution(720, 1280),
-            Resolution(720, 1440),
-            Resolution(768, 1366),
-            Resolution(768, 1536),
-            Resolution(900, 1600),
-            Resolution(900, 1800),
-            Resolution(1080, 1920),
-            Resolution(1080, 2160),
-            Resolution(1440, 2560),
-            Resolution(1440, 2880),
-            Resolution(2160, 3840),
-            Resolution(2160, 4320),
-
-            Resolution(640, 480),
-            Resolution(960, 480),
-            Resolution(800, 600),
-            Resolution(1200, 600),
-            Resolution(1280, 720),
-            Resolution(1440, 720),
-            Resolution(1366, 768),
-            Resolution(1536, 768),
-            Resolution(1600, 900),
-            Resolution(1800, 900),
-            Resolution(1920, 1080),
-            Resolution(2160, 1080),
-            Resolution(2560, 1440),
-            Resolution(2880, 1440),
-            Resolution(3840, 2160),
-            Resolution(4320, 2160)
-    )
-
     /* Preferences */
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
@@ -91,6 +42,30 @@ class MainActivity : AppCompatActivity() {
     private lateinit var density: EditText
     private lateinit var reset: Button
     private lateinit var apply: Button
+
+    /* Scaling percentages */
+    val scales = arrayOf(
+            0.1,
+            0.2,
+            0.3,
+            0.4,
+            0.5,
+            0.6,
+            0.7,
+            0.8,
+            0.9,
+            1.0,
+            1.1,
+            1.2,
+            1.3,
+            1.4,
+            1.5,
+            1.6,
+            1.7,
+            1.8,
+            1.9,
+            2.0
+    )
 
     /* Default screen size and density on start */
     object DefaultScreenSpecs {
@@ -219,18 +194,20 @@ class MainActivity : AppCompatActivity() {
 
     /* Ask user to pick from a list of resolution presets */
     private fun showPresetDialog() {
-        val displayNamePresets = arrayOfNulls<String>(presets.size)
-
-        /* Fill array with display names for each preset */
-        for (i in presets.indices)
-            displayNamePresets[i] = presets[i].displayName()
+        val displayNamePresets = arrayOfNulls<String>(scales.size)
+        for (i in scales.indices)
+            displayNamePresets[i] = "${scales[i]}x"
 
         AlertDialog.Builder(this)
                 .setTitle("Presets")
                 .setItems(displayNamePresets) { _: DialogInterface, which: Int ->
                     wmApi.setBypassBlacklist(true)
-                    wmApi.setDisplayResolution(presets[which].x, presets[which].y)
-                    wmApi.setDisplayDensity(calculateDPI(presets[which].x, presets[which].y))
+                    val newX = (DefaultScreenSpecs.width * scales[which]).roundToInt()
+                    val newY = (DefaultScreenSpecs.height * scales[which]).roundToInt()
+                    val newD = (DefaultScreenSpecs.density * scales[which]).roundToInt()
+
+                    wmApi.setDisplayResolution(newX, newY)
+                    wmApi.setDisplayDensity(newD)
 
                     /* Delay because when we change resolution, window changes */
                     Handler().postDelayed({

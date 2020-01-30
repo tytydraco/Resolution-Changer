@@ -5,7 +5,7 @@
     <string name="resolution_options">Resolution</string>
     <string name="density_options">Density</string>
 
-    <string name="presets">Pick Preset</string>
+    <string name="presets">Pick Scale</string>
     <string name="width">Width</string>
     <string name="width_hint">Width</string>
     <string name="height">Height</string>
