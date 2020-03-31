@@ -116,7 +116,12 @@ class MainActivity : AppCompatActivity() {
         val d = try {
             Integer.parseInt(density.text.toString())
         } catch (_: Exception) {
-            calculateDPI(w, h)
+            /* Fall back to default density if we can */
+            val defaultDensity = sharedPreferences.getInt("defaultDensity", 0)
+            if (defaultDensity != 0)
+                defaultDensity
+            else
+                calculateDPI(w, h)
         }
 
         wmApi.setBypassBlacklist(true)
@@ -173,13 +178,25 @@ class MainActivity : AppCompatActivity() {
         width.setText(DefaultScreenSpecs.width.toString())
         height.setText(DefaultScreenSpecs.height.toString())
         density.setText(DefaultScreenSpecs.density.toString())
+
+        /* Store this for when we need to reset */
+        if (sharedPreferences.getInt("defaultDensity", 0) == 0) {
+            editor.putInt("defaultDensity", DefaultScreenSpecs.density)
+            editor.apply()
+        }
     }
 
     /* Reset resolution and density */
     private fun reset() {
         wmApi.setBypassBlacklist(true)
-        wmApi.clearDisplayDensity()
         wmApi.clearDisplayResolution()
+
+        /* Fall back to default density if we can */
+        val defaultDensity = sharedPreferences.getInt("defaultDensity", 0)
+        if (defaultDensity != 0)
+            wmApi.setDisplayDensity(defaultDensity)
+        else
+            wmApi.clearDisplayDensity()
 
         /* Restart activity because windowManager breaks after reset */
         finish()
