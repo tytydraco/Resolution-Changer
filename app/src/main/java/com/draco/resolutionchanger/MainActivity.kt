@@ -101,23 +101,19 @@ class MainActivity : AppCompatActivity() {
 
     /* Apply resolution and density */
     private fun apply() {
-        var w = 0
-        var h = 0
-        var d = 0
-
-        w = try {
+        val w: Int = try {
             Integer.parseInt(width.text.toString())
         } catch (_: Exception) {
             DefaultScreenSpecs.width
         }
 
-        h = try {
+        val h = try {
             Integer.parseInt(height.text.toString())
         } catch (_: Exception) {
             DefaultScreenSpecs.height
         }
 
-        d = try {
+        val d = try {
             Integer.parseInt(density.text.toString())
         } catch (_: Exception) {
             calculateDPI(w, h)
