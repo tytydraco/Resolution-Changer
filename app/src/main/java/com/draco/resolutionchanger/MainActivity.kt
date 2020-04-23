@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         /* Set DefaultScreenSpecs to current settings */
         fun setup(windowManager: WindowManager) {
             val dm = DisplayMetrics()
-            windowManager.defaultDisplay.getMetrics(dm)
+            windowManager.defaultDisplay.getRealMetrics(dm)
 
             width = dm.widthPixels
             height = dm.heightPixels
