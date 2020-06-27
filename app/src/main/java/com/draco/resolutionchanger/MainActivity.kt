@@ -9,11 +9,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
+import android.os.Looper
 import android.util.DisplayMetrics
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -44,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var apply: Button
 
     /* Scaling percentages */
-    val scales = arrayOf(
+    private val scales = arrayOf(
             0.1,
             0.2,
             0.3,
@@ -101,27 +103,33 @@ class MainActivity : AppCompatActivity() {
 
     /* Apply resolution and density */
     private fun apply() {
+        var error: Boolean = false
+
         val w: Int = try {
             Integer.parseInt(width.text.toString())
         } catch (_: Exception) {
-            DefaultScreenSpecs.width
+            error = true
+            0
         }
 
         val h = try {
             Integer.parseInt(height.text.toString())
         } catch (_: Exception) {
-            DefaultScreenSpecs.height
+            error = true
+            0
         }
 
         val d = try {
             Integer.parseInt(density.text.toString())
         } catch (_: Exception) {
-            /* Fall back to default density if we can */
-            val defaultDensity = sharedPreferences.getInt("defaultDensity", 0)
-            if (defaultDensity != 0)
-                defaultDensity
-            else
-                calculateDPI(w, h)
+            error = true
+            0
+        }
+
+        /* Detect invalid input and warn */
+        if (error || w <= 0 || h <= 0 || d <= 0) {
+            showErrorDialog()
+            return
         }
 
         wmApi.setBypassBlacklist(true)
@@ -129,10 +137,31 @@ class MainActivity : AppCompatActivity() {
         wmApi.setDisplayDensity(d)
 
         /* Delay because when we change resolution, window changes */
-        Handler().postDelayed({
+        Handler(Looper.myLooper()!!).postDelayed({
             showWarningDialog()
             updateEditTexts()
         }, 500)
+    }
+
+    /* Show bad input dialog */
+    private fun showErrorDialog() {
+        AlertDialog.Builder(this)
+                .setTitle("Invalid Input")
+                .setMessage("Your resolution or density specifications are invalid and cannot be parsed as integers. Try completely clearing the fields and re-entering your specifications manually.")
+                .setPositiveButton("Okay", null)
+                .setNegativeButton("Try Repair") { _, _ ->
+                    width.setText(DefaultScreenSpecs.width.toString())
+                    height.setText(DefaultScreenSpecs.height.toString())
+
+                    /* Fall back to default density if we can */
+                    val defaultDensity = sharedPreferences.getInt("defaultDensity", 0)
+                    val d = if (defaultDensity != 0)
+                        defaultDensity
+                    else
+                        calculateDPI(DefaultScreenSpecs.width, DefaultScreenSpecs.height)
+                    density.setText(d.toString())
+                }
+                .show()
     }
 
     /* Show 5 second countdown */
