@@ -1,15 +1,13 @@
 package com.draco.resolutionchanger
 
 import android.Manifest
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Bundle
-import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Looper
+import android.os.*
 import android.util.DisplayMetrics
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
@@ -78,9 +76,13 @@ class MainActivity : AppCompatActivity() {
         var diagPixels: Double = 0.0
 
         /* Set DefaultScreenSpecs to current settings */
-        fun setup(windowManager: WindowManager) {
+        fun setup(context: Context, windowManager: WindowManager) {
             val dm = DisplayMetrics()
-            windowManager.defaultDisplay.getRealMetrics(dm)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                context.display!!.getRealMetrics(dm)
+            } else {
+                windowManager.defaultDisplay.getRealMetrics(dm)
+            }
 
             width = dm.widthPixels
             height = dm.heightPixels
@@ -202,7 +204,7 @@ class MainActivity : AppCompatActivity() {
     /* Use new resolution for text */
     private fun updateEditTexts() {
         /* Read screen specs */
-        DefaultScreenSpecs.setup(windowManager)
+        DefaultScreenSpecs.setup(this, windowManager)
 
         width.setText(DefaultScreenSpecs.width.toString())
         height.setText(DefaultScreenSpecs.height.toString())
